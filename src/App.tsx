@@ -6,9 +6,6 @@ import { FormField, SubmitButton, FormStatus, RadioField, SelectField } from './
 const App = observer(() => {
   // Create form instance
   const [form] = useState(() => new MyForm());
-  
-  // Get current gender value for conditional logic
-  const genderValue = form.$('gender').value;
 
   return (
     <div 
@@ -47,11 +44,11 @@ const App = observer(() => {
             Clothing Preferences
           </h3>
           
-          {/* Dress Color - Disabled when gender is 'male' */}
+          {/* Dress Color - Uses computed disabled prop from mobx-react-form */}
           <SelectField 
             field={form.$('dressColor')} 
             fieldName="dressColor" 
-            disabled={genderValue === 'male'}
+            disabled={form.$('dressColor').disabled}
             options={[
               { value: 'white', label: 'White' },
               { value: 'red', label: 'Red' },
@@ -59,11 +56,11 @@ const App = observer(() => {
             ]}
           />
           
-          {/* Pants Color - Disabled when gender is 'female' */}
+          {/* Pants Color - Uses computed disabled prop from mobx-react-form */}
           <SelectField 
             field={form.$('pantsColor')} 
             fieldName="pantsColor" 
-            disabled={genderValue === 'female'}
+            disabled={form.$('pantsColor').disabled}
             options={[
               { value: 'black', label: 'Black' },
               { value: 'blue', label: 'Blue' },

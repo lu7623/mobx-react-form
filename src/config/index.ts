@@ -5,6 +5,7 @@
 
 export * from './fields';
 export * from './validation-rules';
+export * from './computed-fields';
 
 /**
  * Re-export commonly used configurations

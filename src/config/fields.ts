@@ -38,17 +38,19 @@ export const FORM_FIELDS: FieldDefinition[] = [
     rules: 'required|in:female,male',
     value: ''
   },
+  // Note: dressColor and pantsColor will have computed properties
+  // for disabled, label, and placeholder based on gender selection
   {
     name: 'dressColor',
-    label: 'Choose Dress Color',
-    placeholder: 'Select dress color',
+    label: 'Choose Dress Color', // Will be computed
+    placeholder: 'Select dress color', // Will be computed
     rules: 'string|in:white,red,yellow',
     value: ''
   },
   {
     name: 'pantsColor',
-    label: 'Choose Pants Color',
-    placeholder: 'Select pants color',
+    label: 'Choose Pants Color', // Will be computed
+    placeholder: 'Select pants color', // Will be computed
     rules: 'string|in:black,blue,brown',
     value: ''
   }
