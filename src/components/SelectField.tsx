@@ -6,9 +6,10 @@ interface SelectFieldProps extends SelectInputElementProps {
   // Additional props specific to SelectField can be added here
 }
 
-export const SelectField = ({ field, fieldName, disabled = false }: SelectFieldProps) => {
+export const SelectField = ({ field, fieldName, disabled = false, options }: SelectFieldProps) => {
   const displayConfig = FIELD_DISPLAY[fieldName];
-  const options = 'options' in displayConfig ? displayConfig.options : [];
+  // Use options from props if provided, otherwise fall back to displayConfig
+  const selectOptions = options || ('options' in displayConfig ? displayConfig.options : []);
   
   // Use native HTML select for better compatibility with mobx-react-form
   const fieldBind = field.bind();
@@ -43,7 +44,7 @@ export const SelectField = ({ field, fieldName, disabled = false }: SelectFieldP
         <option value="" disabled>
           {field.placeholder}
         </option>
-        {options.map((option) => (
+        {selectOptions.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>

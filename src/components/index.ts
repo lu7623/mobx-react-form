@@ -5,6 +5,7 @@
 
 // Individual component exports
 export { FormField } from './FormField';
+export { NumberField } from './NumberField';
 export { SubmitButton } from './SubmitButton';
 export { FormStatus } from './FormStatus';
 export { RadioField } from './RadioField';

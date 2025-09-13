@@ -13,45 +13,38 @@ export interface FieldDefinition {
 
 export const FORM_FIELDS: FieldDefinition[] = [
   {
-    name: 'email',
-    label: 'Email',
-    placeholder: 'Insert Email',
-    value: 's.jobs@apple.com',
-    rules: 'required|email|string|between:5,25'
+    name: 'yarnLength',
+    label: 'Yarn Length per 100g',
+    placeholder: 'Enter yarn length in meters',
+    value: '',
+    rules: 'required|numeric|min:50|max:2000'
   },
   {
-    name: 'password',
-    label: 'Password',
-    placeholder: 'Insert Password',
-    rules: 'required|string|between:5,25'
-  },
-  {
-    name: 'passwordConfirm',
-    label: 'Password Confirmation',
-    placeholder: 'Confirm Password',
-    rules: 'required|string|same:password'
-  },
-  {
-    name: 'gender',
-    label: 'Choose Gender',
-    placeholder: 'Select your gender',
-    rules: 'required|in:female,male',
-    value: ''
-  },
-  // Note: dressColor and pantsColor will have computed properties
-  // for disabled, label, and placeholder based on gender selection
-  {
-    name: 'dressColor',
-    label: 'Choose Dress Color', // Will be computed
-    placeholder: 'Select dress color', // Will be computed
-    rules: 'string|in:white,red,yellow',
+    name: 'itemType',
+    label: 'Item Type',
+    placeholder: 'Select item type',
+    rules: 'required|in:scarf,sweater,dress',
     value: ''
   },
   {
-    name: 'pantsColor',
-    label: 'Choose Pants Color', // Will be computed
-    placeholder: 'Select pants color', // Will be computed
-    rules: 'string|in:black,blue,brown',
+    name: 'length',
+    label: 'Length',
+    placeholder: 'Enter length in cm',
+    rules: 'numeric|min:10|max:300',
+    value: ''
+  },
+  {
+    name: 'size',
+    label: 'Size',
+    placeholder: 'Select size',
+    rules: 'string|in:S,M,L,XL',
+    value: ''
+  },
+  {
+    name: 'sleevesLength',
+    label: 'Sleeves Length',
+    placeholder: 'Select sleeves length',
+    rules: 'string|in:short,long',
     value: ''
   }
 ];
@@ -74,48 +67,50 @@ export const getFieldNames = (): string[] => {
  * Field display configuration
  */
 export const FIELD_DISPLAY = {
-  email: {
-    type: 'email',
-    autoComplete: 'email',
-    description: 'Enter a valid email address (5-25 characters)'
+  yarnLength: {
+    type: 'number',
+    autoComplete: 'off',
+    description: 'Enter the length of yarn per 100g in meters (50-2000m)',
+    step: 10,
+    min: 50,
+    max: 2000
   },
-  password: {
-    type: 'password',
-    autoComplete: 'new-password',
-    description: 'Password must be between 5-25 characters'
-  },
-  passwordConfirm: {
-    type: 'password',
-    autoComplete: 'new-password',
-    description: 'Re-enter your password to confirm'
-  },
-  gender: {
-    type: 'radio',
-    autoComplete: 'sex',
-    description: 'Select your gender',
-    options: [
-      { value: 'female', label: 'Female' },
-      { value: 'male', label: 'Male' }
-    ]
-  },
-  dressColor: {
+  itemType: {
     type: 'select',
     autoComplete: 'off',
-    description: 'Choose your dress color',
+    description: 'Select the type of item you want to create',
     options: [
-      { value: 'white', label: 'White' },
-      { value: 'red', label: 'Red' },
-      { value: 'yellow', label: 'Yellow' }
+      { value: 'scarf', label: 'Scarf' },
+      { value: 'sweater', label: 'Sweater' },
+      { value: 'dress', label: 'Dress' }
     ]
   },
-  pantsColor: {
+  length: {
+    type: 'number',
+    autoComplete: 'off',
+    description: 'Enter the desired length in centimeters',
+    step: 5,
+    min: 10,
+    max: 300
+  },
+  size: {
     type: 'select',
-    autoComplete: 'off', 
-    description: 'Choose your pants color',
+    autoComplete: 'off',
+    description: 'Select the size for your garment',
     options: [
-      { value: 'black', label: 'Black' },
-      { value: 'blue', label: 'Blue' },
-      { value: 'brown', label: 'Brown' }
+      { value: 'S', label: 'Small (S)' },
+      { value: 'M', label: 'Medium (M)' },
+      { value: 'L', label: 'Large (L)' },
+      { value: 'XL', label: 'Extra Large (XL)' }
+    ]
+  },
+  sleevesLength: {
+    type: 'radio',
+    autoComplete: 'off',
+    description: 'Choose the length of sleeves',
+    options: [
+      { value: 'short', label: 'Short Sleeves' },
+      { value: 'long', label: 'Long Sleeves' }
     ]
   }
 } as const;

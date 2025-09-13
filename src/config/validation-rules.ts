@@ -7,12 +7,11 @@
  * Individual field validation rules
  */
 export const VALIDATION_RULES = {
-  email: 'required|email|string|between:5,25',
-  password: 'required|string|between:5,25',
-  passwordConfirm: 'required|string|same:password',
-  gender: 'required|in:female,male',
-  dressColor: 'string|in:white,red,yellow',
-  pantsColor: 'string|in:black,blue,brown'
+  yarnLength: 'required|numeric|min:50|max:2000',
+  itemType: 'required|in:scarf,sweater,dress',
+  length: 'numeric|min:10|max:300',
+  size: 'string|in:S,M,L,XL',
+  sleevesLength: 'string|in:short,long'
 } as const;
 
 /**
@@ -35,34 +34,29 @@ export const VALIDATION_MESSAGES = {
  * Field-specific validation constraints
  */
 export const VALIDATION_CONSTRAINTS = {
-  email: {
-    minLength: 5,
-    maxLength: 25,
-    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    description: 'Must be a valid email address between 5-25 characters'
+  yarnLength: {
+    minValue: 50,
+    maxValue: 2000,
+    required: true,
+    description: 'Yarn length must be between 50-2000 meters per 100g'
   },
-  password: {
-    minLength: 5,
-    maxLength: 25,
-    description: 'Must be between 5-25 characters long'
+  itemType: {
+    allowedValues: ['scarf', 'sweater', 'dress'],
+    required: true,
+    description: 'Must select an item type'
   },
-  passwordConfirm: {
-    minLength: 5,
-    maxLength: 25,
-    mustMatchField: 'password',
-    description: 'Must match the password field exactly'
+  length: {
+    minValue: 10,
+    maxValue: 300,
+    description: 'Length must be between 10-300 centimeters'
   },
-  gender: {
-    allowedValues: ['female', 'male'],
-    description: 'Must select either Female or Male'
+  size: {
+    allowedValues: ['S', 'M', 'L', 'XL'],
+    description: 'Select from available sizes'
   },
-  dressColor: {
-    allowedValues: ['white', 'red', 'yellow'],
-    description: 'Select from available dress colors'
-  },
-  pantsColor: {
-    allowedValues: ['black', 'blue', 'brown'],
-    description: 'Select from available pants colors'
+  sleevesLength: {
+    allowedValues: ['short', 'long'],
+    description: 'Select sleeves length'
   }
 } as const;
 
@@ -105,28 +99,25 @@ export const getValidationConstraints = (fieldName: keyof typeof VALIDATION_CONS
  * Validation error message templates by field
  */
 export const FIELD_ERROR_MESSAGES = {
-  email: {
-    required: 'Email address is required',
-    email: 'Please enter a valid email address',
-    between: 'Email must be between 5 and 25 characters'
+  yarnLength: {
+    required: 'Yarn length is required',
+    numeric: 'Please enter a valid number',
+    min: 'Yarn length must be at least 50 meters',
+    max: 'Yarn length cannot exceed 2000 meters'
   },
-  password: {
-    required: 'Password is required',
-    between: 'Password must be between 5 and 25 characters'
+  itemType: {
+    required: 'Please select an item type',
+    in: 'Please select a valid item type'
   },
-  passwordConfirm: {
-    required: 'Password confirmation is required',
-    same: 'Passwords must match exactly',
-    between: 'Password confirmation must be between 5 and 25 characters'
+  length: {
+    numeric: 'Please enter a valid number',
+    min: 'Length must be at least 10 cm',
+    max: 'Length cannot exceed 300 cm'
   },
-  gender: {
-    required: 'Please select your gender',
-    in: 'Please select either Female or Male'
+  size: {
+    in: 'Please select a valid size'
   },
-  dressColor: {
-    in: 'Please select a valid dress color'
-  },
-  pantsColor: {
-    in: 'Please select a valid pants color'
+  sleevesLength: {
+    in: 'Please select a valid sleeves length'
   }
 } as const;

@@ -1,47 +1,43 @@
-import MyForm from './Form';
-
 /**
- * Basic test suite for MyForm structure and configuration
- * Focus on testing form setup and field configuration rather than validation
- * which works better in browser environment with full MobX lifecycle
+ * Tests for Yarn Calculations MyForm Class
+ * Testing mobx-react-form implementation with yarn calculation fields
  */
 
-describe('MyForm Basic Tests', () => {
+import { describe, beforeEach, test, expect } from 'vitest';
+import MyForm from './Form';
+
+describe('Yarn Calculations MyForm Tests', () => {
   let form: MyForm;
 
   beforeEach(() => {
-    // Create a fresh form instance for each test
     form = new MyForm();
   });
 
   describe('Form Structure', () => {
-    test('should initialize with correct field count', () => {
-      expect(form.size).toBe(6);
+    test('should initialize with correct field count for yarn form', () => {
+      expect(form.size).toBe(5);
     });
 
-    test('should have all required fields', () => {
-      expect(form.has('email')).toBe(true);
-      expect(form.has('password')).toBe(true);
-      expect(form.has('passwordConfirm')).toBe(true);
-      expect(form.has('gender')).toBe(true);
-      expect(form.has('dressColor')).toBe(true);
-      expect(form.has('pantsColor')).toBe(true);
+    test('should have all required yarn calculation fields', () => {
+      expect(form.has('yarnLength')).toBe(true);
+      expect(form.has('itemType')).toBe(true);
+      expect(form.has('length')).toBe(true);
+      expect(form.has('size')).toBe(true);
+      expect(form.has('sleevesLength')).toBe(true);
     });
 
-    test('should have correct initial values', () => {
-      expect(form.$('email').value).toBe('s.jobs@apple.com');
-      expect(form.$('password').value).toBe('');
-      expect(form.$('passwordConfirm').value).toBe('');
-      expect(form.$('gender').value).toBe('');
-      expect(form.$('dressColor').value).toBe('');
-      expect(form.$('pantsColor').value).toBe('');
+    test('should have correct initial values for yarn fields', () => {
+      expect(form.$('yarnLength').value).toBe('');
+      expect(form.$('itemType').value).toBe('');
+      expect(form.$('length').value).toBe('');
+      expect(form.$('size').value).toBe('');
+      expect(form.$('sleevesLength').value).toBe('');
     });
   });
 
   describe('Form Configuration', () => {
     test('should have correct validation options configured', () => {
       const options = form.options();
-      
       expect(options.validateOnChange).toBe(true);
       expect(options.validateOnBlur).toBe(true);
       expect(options.showErrorsOnInit).toBe(false);
@@ -49,38 +45,35 @@ describe('MyForm Basic Tests', () => {
 
     test('should have DVR plugin configured', () => {
       const plugins = form.plugins();
-      
       expect(plugins).toHaveProperty('dvr');
-      expect(plugins.dvr).toBeDefined();
+      expect(typeof plugins.dvr).toBe('object');
     });
 
-    test('should have correct field rules', () => {
-      expect(form.$('email').rules).toBe('required|email|string|between:5,25');
-      expect(form.$('password').rules).toBe('required|string|between:5,25');
-      expect(form.$('passwordConfirm').rules).toBe('required|string|same:password');
-      expect(form.$('gender').rules).toBe('required|in:female,male');
-      expect(form.$('dressColor').rules).toBe('string|in:white,red,yellow');
-      expect(form.$('pantsColor').rules).toBe('string|in:black,blue,brown');
+    test('should have correct field rules for yarn fields', () => {
+      expect(form.$('yarnLength').rules).toBe('required|numeric|min:50|max:2000');
+      expect(form.$('itemType').rules).toBe('required|in:scarf,sweater,dress');
+      expect(form.$('length').rules).toBe('numeric|min:10|max:300');
+      expect(form.$('size').rules).toBe('string|in:S,M,L,XL');
+      expect(form.$('sleevesLength').rules).toBe('string|in:short,long');
     });
 
-    test('should have correct field labels', () => {
-      expect(form.$('email').label).toBe('Email');
-      expect(form.$('password').label).toBe('Password');
-      expect(form.$('passwordConfirm').label).toBe('Password Confirmation');
-      expect(form.$('gender').label).toBe('Choose Gender');
-      expect(form.$('dressColor').label).toBe('Choose Dress Color');
-      expect(form.$('pantsColor').label).toBe('Choose Pants Color');
+    test('should have correct field labels for yarn fields', () => {
+      expect(form.$('yarnLength').label).toBe('Yarn Length per 100g');
+      expect(form.$('itemType').label).toBe('Item Type');
+      expect(form.$('length').label).toBe('Length'); // Will be computed based on item type
+      expect(form.$('size').label).toBe('Size'); // Will be computed based on item type
+      expect(form.$('sleevesLength').label).toBe('Sleeves Length'); // Will be computed based on item type
     });
 
-    test('should have correct field placeholders', () => {
-      expect(form.$('email').placeholder).toBe('Insert Email');
-      expect(form.$('password').placeholder).toBe('Insert Password');
-      expect(form.$('passwordConfirm').placeholder).toBe('Confirm Password');
-      expect(form.$('gender').placeholder).toBe('Select your gender');
-      expect(form.$('dressColor').placeholder).toBe('Select dress color');
-      expect(form.$('pantsColor').placeholder).toBe('Select pants color');
+    test('should have correct field placeholders for yarn fields', () => {
+      expect(form.$('yarnLength').placeholder).toBe('Enter yarn length in meters');
+      expect(form.$('itemType').placeholder).toBe('Select item type');
+      expect(form.$('length').placeholder).toBe('Enter length in cm');
+      expect(form.$('size').placeholder).toBe('Select size');
+      expect(form.$('sleevesLength').placeholder).toBe('Select sleeves length');
     });
   });
+
 
   describe('Form Hooks', () => {
     test('should have onSuccess hook', () => {
@@ -97,45 +90,45 @@ describe('MyForm Basic Tests', () => {
   });
 
   describe('Form Methods', () => {
-    test('should be able to set field values', () => {
-      form.$('email').set('test@example.com');
-      form.$('password').set('mypassword');
-      form.$('passwordConfirm').set('mypassword');
+    test('should be able to set yarn calculation field values', () => {
+      form.$('yarnLength').set('150');
+      form.$('itemType').set('scarf');
+      form.$('length').set('180');
 
-      expect(form.$('email').value).toBe('test@example.com');
-      expect(form.$('password').value).toBe('mypassword');
-      expect(form.$('passwordConfirm').value).toBe('mypassword');
+      expect(form.$('yarnLength').value).toBe('150');
+      expect(form.$('itemType').value).toBe('scarf');
+      expect(form.$('length').value).toBe('180');
     });
 
-    test('should be able to clear form', () => {
-      form.$('email').set('test@example.com');
-      form.$('password').set('mypassword');
-      form.$('passwordConfirm').set('mypassword');
-      form.$('gender').set('female');
-      form.$('dressColor').set('red');
-      form.$('pantsColor').set('blue');
-      
+    test('should be able to clear yarn form', () => {
+      // Set some values first
+      form.$('yarnLength').set('150');
+      form.$('itemType').set('scarf');
+      form.$('length').set('180');
+
+      // Clear the form
       form.clear();
-      
-      // After clearing, all fields should be empty (clear() resets to empty, not default values)
-      expect(form.$('email').value).toBe('');
-      expect(form.$('password').value).toBe('');
-      expect(form.$('passwordConfirm').value).toBe('');
-      expect(form.$('gender').value).toBe('');
-      expect(form.$('dressColor').value).toBe('');
-      expect(form.$('pantsColor').value).toBe('');
+
+      // Check all fields are cleared
+      expect(form.$('yarnLength').value).toBe('');
+      expect(form.$('itemType').value).toBe('');
+      expect(form.$('length').value).toBe('');
+      expect(form.$('size').value).toBe('');
+      expect(form.$('sleevesLength').value).toBe('');
     });
 
     test('should have validate method', () => {
       expect(typeof form.validate).toBe('function');
     });
 
-    test('should have values method', () => {
+    test('should have values method returning yarn calculation values', () => {
       expect(typeof form.values).toBe('function');
       const values = form.values();
-      expect(values).toHaveProperty('email');
-      expect(values).toHaveProperty('password');
-      expect(values).toHaveProperty('passwordConfirm');
+      expect(values).toHaveProperty('yarnLength');
+      expect(values).toHaveProperty('itemType');
+      expect(values).toHaveProperty('length');
+      expect(values).toHaveProperty('size');
+      expect(values).toHaveProperty('sleevesLength');
     });
 
     test('should have errors method', () => {
@@ -144,119 +137,172 @@ describe('MyForm Basic Tests', () => {
       expect(typeof errors).toBe('object');
     });
   });
+
+  describe('Validation Tests', () => {
+    test('should validate yarn length field correctly', () => {
+      // Test required validation
+      form.$('yarnLength').set('');
+      form.validate();
+      expect(form.$('yarnLength').hasError).toBe(true);
+
+      // Test minimum value
+      form.$('yarnLength').set('30');
+      form.validate();
+      expect(form.$('yarnLength').hasError).toBe(true);
+
+      // Test maximum value
+      form.$('yarnLength').set('3000');
+      form.validate();
+      expect(form.$('yarnLength').hasError).toBe(true);
+
+      // Test valid value
+      form.$('yarnLength').set('150');
+      form.validate();
+      expect(form.$('yarnLength').hasError).toBe(false);
+    });
+
+    test('should validate item type field correctly', () => {
+      // Test required validation
+      form.$('itemType').set('');
+      form.validate();
+      expect(form.$('itemType').hasError).toBe(true);
+
+      // Test invalid value
+      form.$('itemType').set('invalid');
+      form.validate();
+      expect(form.$('itemType').hasError).toBe(true);
+
+      // Test valid values
+      ['scarf', 'sweater', 'dress'].forEach(itemType => {
+        form.$('itemType').set(itemType);
+        form.validate();
+        expect(form.$('itemType').hasError).toBe(false);
+      });
+    });
+
+    test('should validate length field correctly (when enabled)', () => {
+      // Enable length field by selecting scarf
+      form.$('itemType').set('scarf');
+
+      // Test minimum value
+      form.$('length').set('5');
+      form.validate();
+      expect(form.$('length').hasError).toBe(true);
+
+      // Test maximum value
+      form.$('length').set('500');
+      form.validate();
+      expect(form.$('length').hasError).toBe(true);
+
+      // Test valid value
+      form.$('length').set('180');
+      form.validate();
+      expect(form.$('length').hasError).toBe(false);
+
+      // Test empty value (should be valid since not required)
+      form.$('length').set('');
+      form.validate();
+      expect(form.$('length').hasError).toBe(false);
+    });
+
+    test('should validate size field correctly (when enabled)', () => {
+      // Enable size field by selecting sweater
+      form.$('itemType').set('sweater');
+
+      // Test invalid value
+      form.$('size').set('invalid');
+      form.validate();
+      expect(form.$('size').hasError).toBe(true);
+
+      // Test valid values
+      ['S', 'M', 'L', 'XL'].forEach(size => {
+        form.$('size').set(size);
+        form.validate();
+        expect(form.$('size').hasError).toBe(false);
+      });
+
+      // Test empty value (should be valid since not required)
+      form.$('size').set('');
+      form.validate();
+      expect(form.$('size').hasError).toBe(false);
+    });
+
+    test('should validate sleeves length field correctly (when enabled)', () => {
+      // Enable sleeves field by selecting dress
+      form.$('itemType').set('dress');
+
+      // Test invalid value
+      form.$('sleevesLength').set('invalid');
+      form.validate();
+      expect(form.$('sleevesLength').hasError).toBe(true);
+
+      // Test valid values
+      ['short', 'long'].forEach(sleeves => {
+        form.$('sleevesLength').set(sleeves);
+        form.validate();
+        expect(form.$('sleevesLength').hasError).toBe(false);
+      });
+
+      // Test empty value (should be valid since not required)
+      form.$('sleevesLength').set('');
+      form.validate();
+      expect(form.$('sleevesLength').hasError).toBe(false);
+    });
+
+    test('form should be valid with complete yarn calculation data', () => {
+      // Set required fields
+      form.$('yarnLength').set('150');
+      form.$('itemType').set('scarf');
+      form.$('length').set('180'); // Valid for scarf
+
+      form.validate();
+
+      expect(form.isValid).toBe(true);
+      expect(form.hasErrors).toBe(false);
+    });
+
+    test('form should be invalid without required fields', () => {
+      // Leave required fields empty
+      form.$('yarnLength').set('');
+      form.$('itemType').set('');
+
+      form.validate();
+
+      expect(form.isValid).toBe(false);
+      expect(form.hasErrors).toBe(true);
+    });
+  });
+
+  describe('Real-World Yarn Calculation Scenarios', () => {
+    test('scarf calculation scenario', () => {
+      form.$('yarnLength').set('200');
+      form.$('itemType').set('scarf');
+      form.$('length').set('150');
+
+      form.validate();
+
+      expect(form.isValid).toBe(true);
+    });
+
+    test('sweater calculation scenario', () => {
+      form.$('yarnLength').set('300');
+      form.$('itemType').set('sweater');
+      form.$('size').set('M');
+
+      form.validate();
+
+      expect(form.isValid).toBe(true);
+    });
+
+    test('dress calculation scenario', () => {
+      form.$('yarnLength').set('400');
+      form.$('itemType').set('dress');
+      form.$('size').set('L');
+      form.$('sleevesLength').set('long');
+
+      form.validate();
+
+      expect(form.isValid).toBe(true);
+    });
+  });
 });
-
-/**
- * Manual Testing Utilities
- * These functions can be used for manual testing in the browser console
- */
-
-export class FormTestUtils {
-  static async runAllValidationTests(form: MyForm): Promise<void> {
-    console.log('🧪 Running comprehensive form validation tests...');
-    
-    // Test 1: Email validation
-    console.log('\n1️⃣ Testing Email Validation:');
-    
-    form.$('email').set('');
-    await form.validate();
-    console.log('Empty email:', {
-      hasError: form.$('email').hasError,
-      error: form.$('email').error,
-      isValid: form.$('email').isValid
-    });
-    
-    form.$('email').set('invalid-email');
-    await form.validate();
-    console.log('Invalid email format:', {
-      hasError: form.$('email').hasError,
-      error: form.$('email').error,
-      isValid: form.$('email').isValid
-    });
-    
-    form.$('email').set('user@example.com');
-    await form.validate();
-    console.log('Valid email:', {
-      hasError: form.$('email').hasError,
-      error: form.$('email').error,
-      isValid: form.$('email').isValid
-    });
-    
-    // Test 2: Password validation
-    console.log('\n2️⃣ Testing Password Validation:');
-    
-    form.$('password').set('123');
-    await form.validate();
-    console.log('Short password:', {
-      hasError: form.$('password').hasError,
-      error: form.$('password').error,
-      isValid: form.$('password').isValid
-    });
-    
-    form.$('password').set('validpassword');
-    await form.validate();
-    console.log('Valid password:', {
-      hasError: form.$('password').hasError,
-      error: form.$('password').error,
-      isValid: form.$('password').isValid
-    });
-    
-    // Test 3: Password confirmation validation
-    console.log('\n3️⃣ Testing Password Confirmation:');
-    
-    form.$('passwordConfirm').set('differentpassword');
-    await form.validate();
-    console.log('Password mismatch:', {
-      hasError: form.$('passwordConfirm').hasError,
-      error: form.$('passwordConfirm').error,
-      isValid: form.$('passwordConfirm').isValid
-    });
-    
-    form.$('passwordConfirm').set('validpassword');
-    await form.validate();
-    console.log('Passwords match:', {
-      hasError: form.$('passwordConfirm').hasError,
-      error: form.$('passwordConfirm').error,
-      isValid: form.$('passwordConfirm').isValid
-    });
-    
-    // Test 4: Overall form validation
-    console.log('\n4️⃣ Overall Form Status:');
-    console.log('Form is valid:', form.isValid);
-    console.log('Form has errors:', form.hasError);
-    console.log('Form errors:', form.errors());
-    console.log('Form values:', form.values());
-    
-    console.log('\n✅ All validation tests completed!');
-  }
-  
-  static logFormState(form: MyForm): void {
-    console.log('📊 Current Form State:', {
-      isValid: form.isValid,
-      isDirty: form.isDirty,
-      hasErrors: form.hasError,
-      fields: {
-        email: {
-          value: form.$('email').value,
-          isValid: form.$('email').isValid,
-          error: form.$('email').error
-        },
-        password: {
-          value: form.$('password').value ? '*'.repeat(form.$('password').value.length) : '',
-          isValid: form.$('password').isValid,
-          error: form.$('password').error
-        },
-        passwordConfirm: {
-          value: form.$('passwordConfirm').value ? '*'.repeat(form.$('passwordConfirm').value.length) : '',
-          isValid: form.$('passwordConfirm').isValid,
-          error: form.$('passwordConfirm').error
-        }
-      }
-    });
-  }
-}
-
-// Make test utils available globally for browser console testing
-if (typeof window !== 'undefined') {
-  (window as any).FormTestUtils = FormTestUtils;
-}

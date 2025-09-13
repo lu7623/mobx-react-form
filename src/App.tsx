@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import MyForm from './Form';
-import { FormField, SubmitButton, FormStatus, RadioField, SelectField } from './components';
+import { FormField, NumberField, SubmitButton, FormStatus, RadioField, SelectField } from './components';
 
 const App = observer(() => {
   // Create form instance
@@ -12,62 +12,65 @@ const App = observer(() => {
       className="min-h-screen bg-gray-50 flex items-center justify-center p-4"
       style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}
     >
-      <div className="w-full max-w-md mx-auto p-6 bg-white rounded-xl shadow-lg">
+      <div className="w-full max-w-lg mx-auto p-6 bg-white rounded-xl shadow-lg">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-primary-600 mb-2">
-            Registration Form
+            Yarn Calculations
           </h2>
           <p className="text-gray-600 text-sm">
-            Create your account with secure validation
+            Calculate yarn requirements for your knitting projects
           </p>
         </div>
-      
-      <form onSubmit={form.onSubmit} className="space-y-5">
-        {/* Basic Fields */}
-        <FormField field={form.$('email')} fieldName="email" />
-        <FormField field={form.$('password')} fieldName="password" />
-        <FormField field={form.$('passwordConfirm')} fieldName="passwordConfirm" />
+        
+        <form onSubmit={form.onSubmit} className="space-y-5">
+          {/* Basic Yarn Info */}
+          <NumberField field={form.$('yarnLength')} fieldName="yarnLength" />
 
-        {/* Gender Selection */}
-        <RadioField 
-          field={form.$('gender')} 
-          fieldName="gender"
-          options={[
-            { value: 'female', label: 'Female' },
-            { value: 'male', label: 'Male' }
-          ]}
-        />
-
-        {/* Conditional Color Fields */}
-        <div className="space-y-4">
-          <h3 className="text-sm font-medium text-gray-700 border-t pt-4">
-            Clothing Preferences
-          </h3>
-          
-          {/* Dress Color - Uses computed disabled prop from mobx-react-form */}
+          {/* Item Type Selection */}
           <SelectField 
-            field={form.$('dressColor')} 
-            fieldName="dressColor" 
-            disabled={form.$('dressColor').disabled}
+            field={form.$('itemType')} 
+            fieldName="itemType"
             options={[
-              { value: 'white', label: 'White' },
-              { value: 'red', label: 'Red' },
-              { value: 'yellow', label: 'Yellow' }
+              { value: 'scarf', label: 'Scarf' },
+              { value: 'sweater', label: 'Sweater' },
+              { value: 'dress', label: 'Dress' }
             ]}
           />
-          
-          {/* Pants Color - Uses computed disabled prop from mobx-react-form */}
-          <SelectField 
-            field={form.$('pantsColor')} 
-            fieldName="pantsColor" 
-            disabled={form.$('pantsColor').disabled}
-            options={[
-              { value: 'black', label: 'Black' },
-              { value: 'blue', label: 'Blue' },
-              { value: 'brown', label: 'Brown' }
-            ]}
-          />
-        </div>
+
+          {/* Conditional Fields based on Item Type */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-gray-700 border-t pt-4">
+              Item Specifications
+            </h3>
+            
+            {/* Length */}
+            <NumberField 
+              field={form.$('length')} 
+              fieldName="length"
+            />
+            
+            {/* Size */}
+            <SelectField 
+              field={form.$('size')} 
+              fieldName="size" 
+              options={[
+                { value: 'S', label: 'Small (S)' },
+                { value: 'M', label: 'Medium (M)' },
+                { value: 'L', label: 'Large (L)' },
+                { value: 'XL', label: 'Extra Large (XL)' }
+              ]}
+            />
+
+            {/* Sleeves Length */}
+            <RadioField 
+              field={form.$('sleevesLength')} 
+              fieldName="sleevesLength"
+              options={[
+                { value: 'short', label: 'Short Sleeves' },
+                { value: 'long', label: 'Long Sleeves' }
+              ]}
+            />
+          </div>
 
         {/* Submit Button */}
         <SubmitButton isValid={form.isValid} />
