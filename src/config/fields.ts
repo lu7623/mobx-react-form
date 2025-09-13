@@ -30,6 +30,27 @@ export const FORM_FIELDS: FieldDefinition[] = [
     label: 'Password Confirmation',
     placeholder: 'Confirm Password',
     rules: 'required|string|same:password'
+  },
+  {
+    name: 'gender',
+    label: 'Choose Gender',
+    placeholder: 'Select your gender',
+    rules: 'required|in:female,male',
+    value: ''
+  },
+  {
+    name: 'dressColor',
+    label: 'Choose Dress Color',
+    placeholder: 'Select dress color',
+    rules: 'string|in:white,red,yellow',
+    value: ''
+  },
+  {
+    name: 'pantsColor',
+    label: 'Choose Pants Color',
+    placeholder: 'Select pants color',
+    rules: 'string|in:black,blue,brown',
+    value: ''
   }
 ];
 
@@ -65,6 +86,35 @@ export const FIELD_DISPLAY = {
     type: 'password',
     autoComplete: 'new-password',
     description: 'Re-enter your password to confirm'
+  },
+  gender: {
+    type: 'radio',
+    autoComplete: 'sex',
+    description: 'Select your gender',
+    options: [
+      { value: 'female', label: 'Female' },
+      { value: 'male', label: 'Male' }
+    ]
+  },
+  dressColor: {
+    type: 'select',
+    autoComplete: 'off',
+    description: 'Choose your dress color',
+    options: [
+      { value: 'white', label: 'White' },
+      { value: 'red', label: 'Red' },
+      { value: 'yellow', label: 'Yellow' }
+    ]
+  },
+  pantsColor: {
+    type: 'select',
+    autoComplete: 'off', 
+    description: 'Choose your pants color',
+    options: [
+      { value: 'black', label: 'Black' },
+      { value: 'blue', label: 'Blue' },
+      { value: 'brown', label: 'Brown' }
+    ]
   }
 } as const;
 

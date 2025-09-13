@@ -6,24 +6,16 @@ interface SubmitButtonProps {
 
 export const SubmitButton = ({ isValid }: SubmitButtonProps) => {
   return (
-    <Button
-      type="submit"
+    <Button 
+      type="submit" 
       disabled={!isValid}
-      className={`btn-primary mt-2 ${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}
-      slotProps={{
-        root: {
-          className: `btn-primary mt-2 ${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`
-        }
-      }}
+      className={`w-full px-6 py-3.5 text-base font-semibold border-none rounded-lg cursor-pointer transform ${
+        isValid 
+          ? 'text-white bg-primary-600 hover:bg-primary-700 hover:-translate-y-0.5 hover:shadow-lg' 
+          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+      }`}
     >
-      <span className="flex items-center justify-center gap-2">
-        <span className="text-lg">
-          {isValid ? '🚀' : '⏳'}
-        </span>
-        <span>
-          {isValid ? 'Submit Registration' : 'Complete Form'}
-        </span>
-      </span>
+      {isValid ? 'Submit Form' : 'Please Complete Form'}
     </Button>
   );
 };

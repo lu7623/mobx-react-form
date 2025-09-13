@@ -2,53 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-    color-scheme: light;
-  }
-
-  body {
-    @apply m-0 bg-gray-50 text-gray-900 antialiased;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
+/* Base styles for root and body */
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+  
+  /* Custom CSS variables for colors (matching Tailwind config) */
+  --color-primary-50: #e3f2fd;
+  --color-primary-100: #bbdefb;
+  --color-primary-500: #2196f3;
+  --color-primary-600: #1976d2;
+  --color-primary-700: #1565c0;
+  --color-error-50: #ffebee;
+  --color-error-500: #f44336;
+  --color-error-600: #d32f2f;
 }
 
-@layer components {
-  .form-input {
-    @apply w-full px-3.5 py-3 text-sm border-2 border-gray-200 rounded-lg bg-white transition-all duration-200 outline-none;
-  }
-  
-  .form-input:focus {
-    @apply border-primary-600 ring-4 ring-primary-100;
-  }
-  
-  .form-input.error {
-    @apply border-error-600 ring-4 ring-error-50;
-  }
-  
-  .form-input.error:focus {
-    @apply border-error-600 ring-4 ring-error-100;
-  }
-  
-  .btn-primary {
-    @apply w-full px-6 py-3.5 text-base font-semibold text-white bg-primary-600 border-none rounded-lg cursor-pointer transition-all duration-200 transform;
-  }
-  
-  .btn-primary:hover {
-    @apply bg-primary-700 -translate-y-0.5 shadow-lg shadow-primary-600/25;
-  }
-  
-  .btn-primary:disabled {
-    @apply bg-gray-300 text-gray-500 cursor-not-allowed transform-none shadow-none;
-  }
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f9fafb; /* gray-50 */
+  color: #111827; /* gray-900 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* Ensure consistent box sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Form elements base styling */
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Remove default button styling */
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Smooth transitions for interactive elements */
+button, input, select, textarea {
+  transition: all 0.2s ease-in-out;
 }

@@ -9,7 +9,10 @@
 export const VALIDATION_RULES = {
   email: 'required|email|string|between:5,25',
   password: 'required|string|between:5,25',
-  passwordConfirm: 'required|string|same:password'
+  passwordConfirm: 'required|string|same:password',
+  gender: 'required|in:female,male',
+  dressColor: 'string|in:white,red,yellow',
+  pantsColor: 'string|in:black,blue,brown'
 } as const;
 
 /**
@@ -25,6 +28,7 @@ export const VALIDATION_MESSAGES = {
     string: 'The :attribute must be between :min and :max characters.',
   },
   same: 'The :attribute and :other must match.',
+  in: 'The :attribute must be one of the available options.',
 } as const;
 
 /**
@@ -47,6 +51,18 @@ export const VALIDATION_CONSTRAINTS = {
     maxLength: 25,
     mustMatchField: 'password',
     description: 'Must match the password field exactly'
+  },
+  gender: {
+    allowedValues: ['female', 'male'],
+    description: 'Must select either Female or Male'
+  },
+  dressColor: {
+    allowedValues: ['white', 'red', 'yellow'],
+    description: 'Select from available dress colors'
+  },
+  pantsColor: {
+    allowedValues: ['black', 'blue', 'brown'],
+    description: 'Select from available pants colors'
   }
 } as const;
 
@@ -54,7 +70,7 @@ export const VALIDATION_CONSTRAINTS = {
  * Validation rule builders for complex scenarios
  */
 export const buildValidationRule = {
-  required: (fieldName: string) => `required`,
+  required: () => `required`,
   email: () => `email`,
   string: () => `string`,
   between: (min: number, max: number) => `between:${min},${max}`,
@@ -102,5 +118,15 @@ export const FIELD_ERROR_MESSAGES = {
     required: 'Password confirmation is required',
     same: 'Passwords must match exactly',
     between: 'Password confirmation must be between 5 and 25 characters'
+  },
+  gender: {
+    required: 'Please select your gender',
+    in: 'Please select either Female or Male'
+  },
+  dressColor: {
+    in: 'Please select a valid dress color'
+  },
+  pantsColor: {
+    in: 'Please select a valid pants color'
   }
 } as const;

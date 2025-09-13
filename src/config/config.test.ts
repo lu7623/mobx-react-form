@@ -8,7 +8,7 @@ import {
   getFieldConfig, 
   getFieldNames, 
   FIELD_DISPLAY,
-  FieldDefinition 
+  type FieldDefinition 
 } from './fields';
 
 import { 
@@ -24,7 +24,7 @@ import {
 describe('Field Configuration Tests', () => {
   describe('FORM_FIELDS', () => {
     test('should have correct number of fields', () => {
-      expect(FORM_FIELDS).toHaveLength(3);
+      expect(FORM_FIELDS).toHaveLength(6);
     });
 
     test('should have all required field properties', () => {
@@ -42,7 +42,7 @@ describe('Field Configuration Tests', () => {
 
     test('should have correct field names', () => {
       const fieldNames = FORM_FIELDS.map(f => f.name);
-      expect(fieldNames).toEqual(['email', 'password', 'passwordConfirm']);
+      expect(fieldNames).toEqual(['email', 'password', 'passwordConfirm', 'gender', 'dressColor', 'pantsColor']);
     });
 
     test('should have email field with default value', () => {
@@ -67,7 +67,7 @@ describe('Field Configuration Tests', () => {
 
     test('getFieldNames should return all field names', () => {
       const names = getFieldNames();
-      expect(names).toEqual(['email', 'password', 'passwordConfirm']);
+      expect(names).toEqual(['email', 'password', 'passwordConfirm', 'gender', 'dressColor', 'pantsColor']);
     });
   });
 
@@ -165,14 +165,14 @@ describe('Validation Rules Configuration Tests', () => {
 
     test('getValidationConstraints should return correct constraints', () => {
       const emailConstraints = getValidationConstraints('email');
-      expect(emailConstraints.minLength).toBe(5);
-      expect(emailConstraints.maxLength).toBe(25);
+      expect('minLength' in emailConstraints ? emailConstraints.minLength : undefined).toBe(5);
+      expect('maxLength' in emailConstraints ? emailConstraints.maxLength : undefined).toBe(25);
     });
   });
 
   describe('buildValidationRule', () => {
     test('should build individual rules correctly', () => {
-      expect(buildValidationRule.required('test')).toBe('required');
+      expect(buildValidationRule.required()).toBe('required');
       expect(buildValidationRule.email()).toBe('email');
       expect(buildValidationRule.string()).toBe('string');
       expect(buildValidationRule.between(5, 25)).toBe('between:5,25');

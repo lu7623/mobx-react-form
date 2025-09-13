@@ -16,19 +16,25 @@ describe('MyForm Basic Tests', () => {
 
   describe('Form Structure', () => {
     test('should initialize with correct field count', () => {
-      expect(form.size).toBe(3);
+      expect(form.size).toBe(6);
     });
 
     test('should have all required fields', () => {
       expect(form.has('email')).toBe(true);
       expect(form.has('password')).toBe(true);
       expect(form.has('passwordConfirm')).toBe(true);
+      expect(form.has('gender')).toBe(true);
+      expect(form.has('dressColor')).toBe(true);
+      expect(form.has('pantsColor')).toBe(true);
     });
 
     test('should have correct initial values', () => {
       expect(form.$('email').value).toBe('s.jobs@apple.com');
       expect(form.$('password').value).toBe('');
       expect(form.$('passwordConfirm').value).toBe('');
+      expect(form.$('gender').value).toBe('');
+      expect(form.$('dressColor').value).toBe('');
+      expect(form.$('pantsColor').value).toBe('');
     });
   });
 
@@ -52,18 +58,27 @@ describe('MyForm Basic Tests', () => {
       expect(form.$('email').rules).toBe('required|email|string|between:5,25');
       expect(form.$('password').rules).toBe('required|string|between:5,25');
       expect(form.$('passwordConfirm').rules).toBe('required|string|same:password');
+      expect(form.$('gender').rules).toBe('required|in:female,male');
+      expect(form.$('dressColor').rules).toBe('string|in:white,red,yellow');
+      expect(form.$('pantsColor').rules).toBe('string|in:black,blue,brown');
     });
 
     test('should have correct field labels', () => {
       expect(form.$('email').label).toBe('Email');
       expect(form.$('password').label).toBe('Password');
       expect(form.$('passwordConfirm').label).toBe('Password Confirmation');
+      expect(form.$('gender').label).toBe('Choose Gender');
+      expect(form.$('dressColor').label).toBe('Choose Dress Color');
+      expect(form.$('pantsColor').label).toBe('Choose Pants Color');
     });
 
     test('should have correct field placeholders', () => {
       expect(form.$('email').placeholder).toBe('Insert Email');
       expect(form.$('password').placeholder).toBe('Insert Password');
       expect(form.$('passwordConfirm').placeholder).toBe('Confirm Password');
+      expect(form.$('gender').placeholder).toBe('Select your gender');
+      expect(form.$('dressColor').placeholder).toBe('Select dress color');
+      expect(form.$('pantsColor').placeholder).toBe('Select pants color');
     });
   });
 
@@ -96,6 +111,9 @@ describe('MyForm Basic Tests', () => {
       form.$('email').set('test@example.com');
       form.$('password').set('mypassword');
       form.$('passwordConfirm').set('mypassword');
+      form.$('gender').set('female');
+      form.$('dressColor').set('red');
+      form.$('pantsColor').set('blue');
       
       form.clear();
       
@@ -103,6 +121,9 @@ describe('MyForm Basic Tests', () => {
       expect(form.$('email').value).toBe('');
       expect(form.$('password').value).toBe('');
       expect(form.$('passwordConfirm').value).toBe('');
+      expect(form.$('gender').value).toBe('');
+      expect(form.$('dressColor').value).toBe('');
+      expect(form.$('pantsColor').value).toBe('');
     });
 
     test('should have validate method', () => {
