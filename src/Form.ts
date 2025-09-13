@@ -37,10 +37,18 @@ export default class MyForm extends Form {
   /*
     Return the `fields` as a collection into the `setup()` method
     Fields and validation rules are loaded from separate configuration files.
+    Also define initial values here as per mobx-react-form documentation.
   */
   setup() {
     return {
       fields: FORM_FIELDS,
+      initials: {
+        yarnLength: '400',
+        itemType: 'scarf',
+        length: '120',
+        size: '',
+        sleevesLength: ''
+      }
     };
   }
 
@@ -49,23 +57,14 @@ export default class MyForm extends Form {
   */
   hooks() {
     return {
-      /*
-        Success Validation Hook
-      */
-      onSuccess(form: Form) {
+      onSuccess: (form: Form) => {
         alert('Form is valid! Send the request here.');
-        // get field values
         console.log('Form Values!', form.values());
       },
-      /*
-        Error Validation Hook
-      */
-      onError(form:Form) {
+      onError: (form: Form) => {
         alert('Form has errors!');
-        // get all form errors
         console.log('All form errors', form.errors());
       }
     };
   }
-
 }

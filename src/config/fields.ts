@@ -16,7 +16,7 @@ export const FORM_FIELDS: FieldDefinition[] = [
     name: 'yarnLength',
     label: 'Yarn Length per 100g',
     placeholder: 'Enter yarn length in meters',
-    value: '',
+    value: '400',
     rules: 'required|numeric|min:50|max:2000'
   },
   {
@@ -24,14 +24,14 @@ export const FORM_FIELDS: FieldDefinition[] = [
     label: 'Item Type',
     placeholder: 'Select item type',
     rules: 'required|in:scarf,sweater,dress',
-    value: ''
+    value: 'scarf'
   },
   {
     name: 'length',
     label: 'Length',
     placeholder: 'Enter length in cm',
     rules: 'numeric|min:10|max:300',
-    value: ''
+    value: '120'
   },
   {
     name: 'size',

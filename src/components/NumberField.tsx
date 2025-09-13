@@ -1,5 +1,5 @@
-import { Input } from '@mui/base/Input';
 import { FormControl } from '@mui/base/FormControl';
+import { Input } from '@mui/base/Input';
 import { FIELD_DISPLAY } from '../config';
 import type { TextInputElementProps } from '../types/InputElementTypes';
 
@@ -13,24 +13,26 @@ export const NumberField = ({ field, fieldName, min, max, step }: NumberFieldPro
   const displayConfig = FIELD_DISPLAY[fieldName];
 
   return (
-    <FormControl className="space-y-2">
+    <FormControl 
+      className="space-y-2"
+      {...field.bind()}
+    >
       <label className="block text-sm font-semibold text-gray-700">
         {field.label}
       </label>
       <Input
-        {...field.bind()}
         slotProps={{
           input: {
-            className: `w-full px-3.5 py-3 text-sm border-2 rounded-lg bg-white outline-none ${
-              field.hasError
-                ? 'border-red-600 ring-4 ring-red-50'
-                : 'border-gray-200 hover:border-gray-300 focus:border-primary-600 focus:ring-4 focus:ring-primary-100'
-            }`,
             type: 'number',
             min: min || (displayConfig && 'min' in displayConfig ? displayConfig.min : undefined),
             max: max || (displayConfig && 'max' in displayConfig ? displayConfig.max : undefined),
             step: step || (displayConfig && 'step' in displayConfig ? displayConfig.step : undefined),
             placeholder: field.placeholder,
+            className: `w-full px-3.5 py-3 text-sm border-2 rounded-lg bg-white outline-none ${
+              field.hasError
+                ? 'border-red-600 ring-4 ring-red-50'
+                : 'border-gray-200 hover:border-gray-300 focus:border-primary-600 focus:ring-4 focus:ring-primary-100'
+            }`,
           },
         }}
       />
