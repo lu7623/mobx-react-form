@@ -1,15 +1,19 @@
+import { observer } from 'mobx-react-lite';
 import { FormControl } from '@mui/base/FormControl';
-import { FIELD_DISPLAY } from '../config';
-import type { SelectInputElementProps } from '../types/InputElementTypes';
 
-interface SelectFieldProps extends SelectInputElementProps {
-  // Additional props specific to SelectField can be added here
+interface SelectOption {
+  value: string;
+  label: string;
 }
 
-export const SelectField = ({ field, fieldName, disabled = false, options }: SelectFieldProps) => {
-  const displayConfig = FIELD_DISPLAY[fieldName];
-  // Use options from props if provided, otherwise fall back to displayConfig
-  const selectOptions = options || ('options' in displayConfig ? displayConfig.options : []);
+interface SelectFieldProps {
+  field: any;
+  fieldName?: string; // Optional for backward compatibility
+  options: SelectOption[];
+  disabled?: boolean;
+}
+
+export const SelectField = observer(({ field, options, disabled = false }: SelectFieldProps) => {
   
   // Use native HTML select for better compatibility with mobx-react-form
   const fieldBind = field.bind();
@@ -44,7 +48,7 @@ export const SelectField = ({ field, fieldName, disabled = false, options }: Sel
         <option value="" disabled>
           {field.placeholder}
         </option>
-        {selectOptions.map((option) => (
+        {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
@@ -58,4 +62,4 @@ export const SelectField = ({ field, fieldName, disabled = false, options }: Sel
       )}
     </FormControl>
   );
-};
+});

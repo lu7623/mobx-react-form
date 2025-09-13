@@ -1,52 +1,52 @@
+import { observer } from 'mobx-react-lite';
 import { FormControl } from '@mui/base/FormControl';
-import { Input } from '@mui/base/Input';
-import { FIELD_DISPLAY } from '../config';
-import type { TextInputElementProps } from '../types/InputElementTypes';
 
-interface NumberFieldProps extends Omit<TextInputElementProps, 'type'> {
+interface NumberFieldProps {
+  field: any;
+  fieldName?: string; // Optional for backward compatibility
   min?: number;
   max?: number;
   step?: number;
+  disabled?: boolean;
 }
 
-export const NumberField = ({ field, fieldName, min, max, step }: NumberFieldProps) => {
-  const displayConfig = FIELD_DISPLAY[fieldName];
+export const NumberField = observer(({ field, min, max, step, disabled = false }: NumberFieldProps) => {
 
   return (
-    <FormControl 
-      className="space-y-2"
-      {...field.bind()}
-    >
-      <label className="block text-sm font-semibold text-gray-700">
+    <FormControl className="space-y-2">
+      <label className={`block text-sm font-semibold ${
+        disabled ? 'text-gray-400' : 'text-gray-700'
+      }`}>
         {field.label}
+        {disabled && <span className="ml-2 text-xs text-gray-400">(disabled)</span>}
       </label>
-      <Input
-        slotProps={{
-          input: {
-            type: 'number',
-            min: min || (displayConfig && 'min' in displayConfig ? displayConfig.min : undefined),
-            max: max || (displayConfig && 'max' in displayConfig ? displayConfig.max : undefined),
-            step: step || (displayConfig && 'step' in displayConfig ? displayConfig.step : undefined),
-            placeholder: field.placeholder,
-            className: `w-full px-3.5 py-3 text-sm border-2 rounded-lg bg-white outline-none ${
-              field.hasError
-                ? 'border-red-600 ring-4 ring-red-50'
-                : 'border-gray-200 hover:border-gray-300 focus:border-primary-600 focus:ring-4 focus:ring-primary-100'
-            }`,
-          },
-        }}
+      <input
+        {...field.bind()}
+        type="number"
+        min={min}
+        max={max}
+        step={step || 1}
+        placeholder={field.placeholder}
+        disabled={disabled}
+        className={`w-full px-3.5 py-3 text-sm border-2 rounded-lg bg-white outline-none ${
+          disabled
+            ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
+            : field.hasError
+            ? 'border-red-600 ring-4 ring-red-50'
+            : 'border-gray-200 hover:border-gray-300 focus:border-primary-600 focus:ring-4 focus:ring-primary-100'
+        }`}
       />
-      {field.hasError && (
+      {field.hasError && !disabled && (
         <div className="flex items-center gap-1.5 text-red-600 text-xs mt-1.5">
           <span className="text-sm">⚠️</span>
           <span>{field.error}</span>
         </div>
       )}
-      {displayConfig && 'description' in displayConfig && displayConfig.description && (
+      {field.description && (
         <p className="text-xs text-gray-500 mt-1">
-          {displayConfig.description}
+          {field.description}
         </p>
       )}
     </FormControl>
   );
-};
+});

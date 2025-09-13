@@ -1,11 +1,11 @@
 import { Form } from 'mobx-react-form';
 import dvr from 'mobx-react-form/lib/validators/DVR';
 import validatorjs from 'validatorjs';
-import { FORM_FIELDS, VALIDATION_MESSAGES } from './config';
+import { FIELDS, VALUES, LABELS, PLACEHOLDERS, RULES, DEFAULTS, DISABLED } from './config/form-config';
 
-// Configure validatorjs with validation messages from config
-validatorjs.useLang('en');
-validatorjs.setMessages('en', VALIDATION_MESSAGES);
+// Import validatorjs configuration - this initializes the library automatically
+import './config/validatorjs-config';
+
 
 export default class MyForm extends Form {
   
@@ -25,31 +25,40 @@ export default class MyForm extends Form {
 
   /*
     Form options to enable validation on change and blur
+    strictSelect: false is required for computed properties to access fields before creation
   */
   options() {
     return {
       validateOnChange: true,
       validateOnBlur: true,
       showErrorsOnInit: false,
+      strictSelect: false, // Required for computed properties
     };
   }
 
   /*
     Return the `fields` as a collection into the `setup()` method
-    Fields and validation rules are loaded from separate configuration files.
-    Also define initial values here as per mobx-react-form documentation.
+    Fields, validation rules, default values, computed properties,
+    and custom validators are all loaded from separate configuration files.
   */
   setup() {
     return {
-      fields: FORM_FIELDS,
-      initials: {
-        yarnLength: '400',
-        itemType: 'scarf',
-        length: '120',
-        size: '',
-        sleevesLength: ''
-      }
+      fields: FIELDS,
+      values: VALUES,
+      labels: LABELS,
+      placeholders: PLACEHOLDERS,
+      rules: RULES,
+      defaults: DEFAULTS,
+      disabled: DISABLED
     };
+  }
+
+  /*
+    Reset form to default values
+  */
+  resetToDefaults() {
+    console.log('Reset to defaults called');
+    this.reset();
   }
 
   /*
@@ -64,7 +73,7 @@ export default class MyForm extends Form {
       onError: (form: Form) => {
         alert('Form has errors!');
         console.log('All form errors', form.errors());
-      }
+      },
     };
   }
 }

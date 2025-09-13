@@ -17,7 +17,7 @@ import {
   type SelectInputElementProps,
   type RadioInputElementProps
 } from './InputElementTypes';
-import { type FieldName } from '../config';
+// Note: FieldName type removed in simplified config approach
 
 // Mock form field for testing
 const createMockField = (): BaseFormField => ({
@@ -57,21 +57,21 @@ describe('Input Element Types', () => {
 
   describe('getInputElementType function', () => {
     test('should return correct type for email field', () => {
-      expect(getInputElementType('email' as FieldName)).toBe(InputElementType.EMAIL);
+      expect(getInputElementType('email')).toBe(InputElementType.EMAIL);
     });
 
     test('should return correct type for password fields', () => {
-      expect(getInputElementType('password' as FieldName)).toBe(InputElementType.PASSWORD);
-      expect(getInputElementType('passwordConfirm' as FieldName)).toBe(InputElementType.PASSWORD);
+      expect(getInputElementType('password')).toBe(InputElementType.PASSWORD);
+      expect(getInputElementType('passwordConfirm')).toBe(InputElementType.PASSWORD);
     });
 
     test('should return correct type for gender field', () => {
-      expect(getInputElementType('gender' as FieldName)).toBe(InputElementType.RADIO);
+      expect(getInputElementType('gender')).toBe(InputElementType.RADIO);
     });
 
     test('should return correct type for color fields', () => {
-      expect(getInputElementType('dressColor' as FieldName)).toBe(InputElementType.SELECT);
-      expect(getInputElementType('pantsColor' as FieldName)).toBe(InputElementType.SELECT);
+      expect(getInputElementType('dressColor')).toBe(InputElementType.SELECT);
+      expect(getInputElementType('pantsColor')).toBe(InputElementType.SELECT);
     });
 
     test('should return TEXT as default for unknown fields', () => {
@@ -85,7 +85,7 @@ describe('Input Element Types', () => {
       const props = createInputElementProps<TextInputElementProps>(
         InputElementType.TEXT,
         field,
-        'email' as FieldName,
+        'email',
         { type: 'text', autoComplete: 'email' }
       );
 
@@ -105,7 +105,7 @@ describe('Input Element Types', () => {
       const props = createInputElementProps<SelectInputElementProps>(
         InputElementType.SELECT,
         field,
-        'dressColor' as FieldName,
+        'dressColor',
         { options }
       );
 
@@ -119,14 +119,14 @@ describe('Input Element Types', () => {
     test('isTextInputProps should identify text input props correctly', () => {
       const textProps: TextInputElementProps = {
         field: createMockField(),
-        fieldName: 'email' as FieldName,
+        fieldName: 'email',
         type: 'email',
         autoComplete: 'email'
       };
 
       const selectProps: SelectInputElementProps = {
         field: createMockField(),
-        fieldName: 'dressColor' as FieldName,
+        fieldName: 'dressColor',
         options: [{ value: 'red', label: 'Red' }]
       };
 
@@ -137,13 +137,13 @@ describe('Input Element Types', () => {
     test('isSelectInputProps should identify select input props correctly', () => {
       const selectProps: SelectInputElementProps = {
         field: createMockField(),
-        fieldName: 'dressColor' as FieldName,
+        fieldName: 'dressColor',
         options: [{ value: 'red', label: 'Red' }]
       };
 
       const textProps: TextInputElementProps = {
         field: createMockField(),
-        fieldName: 'email' as FieldName,
+        fieldName: 'email',
         type: 'email'
       };
 
@@ -154,13 +154,13 @@ describe('Input Element Types', () => {
     test('isRadioInputProps should identify radio input props correctly', () => {
       const radioProps: RadioInputElementProps = {
         field: createMockField(),
-        fieldName: 'gender' as FieldName,
+        fieldName: 'gender',
         options: [{ value: 'male', label: 'Male' }]
       };
 
       const selectProps: SelectInputElementProps = {
         field: createMockField(),
-        fieldName: 'dressColor' as FieldName,
+        fieldName: 'dressColor',
         options: [{ value: 'red', label: 'Red' }],
         multiple: true
       };
@@ -184,7 +184,7 @@ describe('Input Element Types', () => {
 
       const textProps: TextInputElementProps = {
         field: createMockField(),
-        fieldName: 'email' as FieldName,
+        fieldName: 'email',
         type: 'email'
       };
 
@@ -216,7 +216,7 @@ describe('Input Element Types', () => {
     test('Extended interfaces should maintain base properties', () => {
       const textProps: TextInputElementProps = {
         field: createMockField(),
-        fieldName: 'email' as FieldName,
+        fieldName: 'email',
         type: 'email',
         autoComplete: 'email',
         disabled: false
@@ -224,14 +224,14 @@ describe('Input Element Types', () => {
 
       const selectProps: SelectInputElementProps = {
         field: createMockField(),
-        fieldName: 'dressColor' as FieldName,
+        fieldName: 'dressColor',
         options: [],
         disabled: false
       };
 
       const radioProps: RadioInputElementProps = {
         field: createMockField(),
-        fieldName: 'gender' as FieldName,
+        fieldName: 'gender',
         options: [],
         disabled: false
       };

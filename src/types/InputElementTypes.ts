@@ -3,7 +3,7 @@
  * Provides type-safe interfaces for all form input components
  */
 
-import { type FieldName } from '../config';
+// Note: FieldName type removed in simplified config approach
 
 /**
  * Base field interface that all MobX React Form fields provide
@@ -27,7 +27,7 @@ export interface BaseFormField {
  */
 export interface BaseInputElementProps<TField extends BaseFormField = BaseFormField> {
   field: TField;
-  fieldName: FieldName;
+  fieldName?: string; // Optional for backward compatibility
   disabled?: boolean;
   className?: string;
   'data-testid'?: string;
@@ -201,8 +201,8 @@ export interface InputElementConfig {
 export interface GenericInputProps<T extends InputElementProps = InputElementProps> {
   config: InputElementConfig;
   props: T;
-  onValueChange?: (value: string, fieldName: FieldName) => void;
-  onValidation?: (isValid: boolean, errors: string[], fieldName: FieldName) => void;
+  onValueChange?: (value: string, fieldName?: string) => void;
+  onValidation?: (isValid: boolean, errors: string[], fieldName?: string) => void;
 }
 
 /**
@@ -258,7 +258,7 @@ export const isCheckboxInputProps = (props: InputElementProps): props is Checkbo
 /**
  * Utility functions
  */
-export const getInputElementType = (fieldName: FieldName): InputElementType => {
+export const getInputElementType = (fieldName?: string): InputElementType => {
   // This can be enhanced to dynamically determine type based on field configuration
   switch (fieldName) {
     case 'email':
@@ -279,7 +279,7 @@ export const getInputElementType = (fieldName: FieldName): InputElementType => {
 export const createInputElementProps = <T extends InputElementProps>(
   _type: InputElementType,
   field: BaseFormField,
-  fieldName: FieldName,
+  fieldName?: string,
   additionalProps?: Partial<T>
 ): T => {
   const baseProps = {

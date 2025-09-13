@@ -11,17 +11,7 @@ export { FormStatus } from './FormStatus';
 export { RadioField } from './RadioField';
 export { SelectField } from './SelectField';
 
-// Unified input system exports
-export { 
-  UnifiedInputField,
-  TextInputField,
-  EmailInputField, 
-  PasswordInputField,
-  SelectInputField,
-  RadioInputField,
-  createTypedInputField,
-  createInputField
-} from './UnifiedInputField';
+// Note: Unified input system removed for simplified approach
 
 // Type exports
 export type {

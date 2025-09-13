@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import MyForm from './Form';
-import { FormField, NumberField, SubmitButton, FormStatus, RadioField, SelectField } from './components';
+import { NumberField, SubmitButton, FormStatus, RadioField, SelectField } from './components';
 
 const App = observer(() => {
   // Create form instance
@@ -43,16 +43,18 @@ const App = observer(() => {
               Item Specifications
             </h3>
             
-            {/* Length */}
+            {/* Length - Disabled when item type is not 'scarf' */}
             <NumberField 
               field={form.$('length')} 
               fieldName="length"
+              disabled={form.$('length').disabled}
             />
             
-            {/* Size */}
+            {/* Size - Disabled when item type is 'scarf' */}
             <SelectField 
               field={form.$('size')} 
-              fieldName="size" 
+              fieldName="size"
+              disabled={form.$('size').disabled}
               options={[
                 { value: 'S', label: 'Small (S)' },
                 { value: 'M', label: 'Medium (M)' },
@@ -61,10 +63,11 @@ const App = observer(() => {
               ]}
             />
 
-            {/* Sleeves Length */}
+            {/* Sleeves Length - Disabled when item type is not 'dress' */}
             <RadioField 
               field={form.$('sleevesLength')} 
               fieldName="sleevesLength"
+              disabled={form.$('sleevesLength').disabled}
               options={[
                 { value: 'short', label: 'Short Sleeves' },
                 { value: 'long', label: 'Long Sleeves' }
@@ -72,11 +75,57 @@ const App = observer(() => {
             />
           </div>
 
-        {/* Submit Button */}
-        <SubmitButton isValid={form.isValid} />
+          {/* Body Measurements */}
+          <div className="space-y-4">
+            <div className="border-t pt-4">
+              <h3 className="text-sm font-medium text-gray-700">
+                Body Measurements
+                {form.$('itemType')?.value === 'scarf' && (
+                  <span className="ml-2 text-xs text-gray-400 font-normal">
+                    (not required for scarfs)
+                  </span>
+                )}
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Waist Measurement */}
+              <NumberField 
+                field={form.$('bodyMeasurements.waist')} 
+                fieldName="bodyMeasurements.waist"
+                disabled={form.$('bodyMeasurements.waist').disabled}
+              />
+              
+              {/* Chest Measurement */}
+              <NumberField 
+                field={form.$('bodyMeasurements.chest')} 
+                fieldName="bodyMeasurements.chest"
+                disabled={form.$('bodyMeasurements.chest').disabled}
+              />
+              
+              {/* Hips Measurement */}
+              <NumberField 
+                field={form.$('bodyMeasurements.hips')} 
+                fieldName="bodyMeasurements.hips"
+                disabled={form.$('bodyMeasurements.hips').disabled}
+              />
+            </div>
+          </div>
 
-        {/* Form Status */}
-        <FormStatus isValid={form.isValid} isDirty={form.isDirty} />
+          {/* Action Buttons */}
+          <div className="flex gap-3">
+            <SubmitButton isValid={form.isValid} />
+            <button
+              type="button"
+              onClick={() => form.resetToDefaults()}
+              className="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-gray-100"
+            >
+              Reset to Defaults
+            </button>
+          </div>
+
+          {/* Form Status */}
+          <FormStatus isValid={form.isValid} isDirty={form.isDirty} />
       </form>
       </div>
     </div>
