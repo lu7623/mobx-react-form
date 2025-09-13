@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { FormControl } from '@mui/base/FormControl';
+import { useField } from '../contexts/FormContext';
 
 interface SelectOption {
   value: string;
@@ -7,13 +8,13 @@ interface SelectOption {
 }
 
 interface SelectFieldProps {
-  field: any;
-  fieldName?: string; // Optional for backward compatibility
+  fieldName: string;
   options: SelectOption[];
-  disabled?: boolean;
 }
 
-export const SelectField = observer(({ field, options, disabled = false }: SelectFieldProps) => {
+export const SelectField = observer(({ fieldName, options }: SelectFieldProps) => {
+  const field = useField(fieldName);
+  const disabled = field.disabled;
   
   // Use native HTML select for better compatibility with mobx-react-form
   const fieldBind = field.bind();
@@ -28,6 +29,7 @@ export const SelectField = observer(({ field, options, disabled = false }: Selec
       </label>
       <select
         {...fieldBind}
+        onChange={fieldBind.onChange}
         disabled={disabled}
                className={`w-full px-3.5 py-3 text-sm border-2 rounded-lg bg-white outline-none ${
                  disabled

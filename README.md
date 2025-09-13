@@ -1,14 +1,29 @@
-# Yarn Calculations Form
+# 🧶 Yarn Calculations Form
 
-A modern React form application built with **MobX React Form** using the simplified **separated properties pattern**. Calculate yarn requirements for knitting projects including scarfs, sweaters, and dresses.
+A modern, fully reactive React form application built with **MobX React Form** that calculates precise yarn requirements for knitting projects. Features intelligent form logic, real-time calculations, and beautiful responsive design.
 
 ## 🎯 Features
 
-### Smart Form Logic
+### 🧮 Yarn Calculation Engine
+- **Real-time Calculations**: Results automatically update as you type
+- **Item-specific Formulas**: Different calculation methods per garment type
+- **Accurate Pack Estimation**: Automatically calculates yarn packs needed (50g each)
+- **Beautiful Results Display**: Gradient UI with formula breakdown
+- **Error Handling**: Graceful validation with helpful error messages
+
+### 📐 Smart Calculation Formulas
+- **Scarf**: `totalYarn = length × 100 × 3 ÷ yarnLength`
+- **Sweater**: `totalYarn = (waist + chest + hips) × 100 × 12 ÷ (3 × yarnLength)`
+- **Dress (Short Sleeves)**: `totalYarn = (waist + chest + hips) × 100 × 30 ÷ (3 × yarnLength)`
+- **Dress (Long Sleeves)**: `totalYarn = (waist + chest + hips) × 100 × 40 ÷ (3 × yarnLength)`
+
+### 🔄 Reactive Form Logic
+- **Field Dependencies**: Automatic field updates based on selections
 - **Conditional Fields**: Fields automatically enable/disable based on item type
+- **Auto-set Values**: Sleeves length automatically configured for sweaters
 - **Body Measurements**: Automatically disabled for scarfs (not required)
-- **Item-specific Validation**: Different validation rules per item type
-- **Real-time Updates**: Form reacts instantly to user input changes
+- **Size-based Validation**: Body measurement ranges adjust based on selected size (S/M/L/XL)
+- **Smart Error Messages**: Context-aware validation messages with size-specific ranges
 
 ### Form Fields
 - **Yarn Length** (required): 50-800 meters per 100g
@@ -16,39 +31,76 @@ A modern React form application built with **MobX React Form** using the simplif
 - **Length**: Only for scarfs (10-300 cm)
 - **Size**: Only for sweaters/dresses (S, M, L, XL)
 - **Sleeves Length**: Only for dresses (Short/Long)
-- **Body Measurements**: Only for sweaters/dresses
-  - Waist: 40-180 cm
-  - Chest: 50-200 cm  
-  - Hips: 60-220 cm
+- **Body Measurements**: Only for sweaters/dresses (ranges vary by size)
+  - **Size S**: Waist 60-75cm, Chest 80-95cm, Hips 85-100cm
+  - **Size M**: Waist 70-85cm, Chest 90-105cm, Hips 95-110cm  
+  - **Size L**: Waist 80-95cm, Chest 100-115cm, Hips 105-120cm
+  - **Size XL**: Waist 90-110cm, Chest 110-130cm, Hips 115-135cm
 
 ## 🏗️ Architecture
 
-### Simplified Structure (Following MobX React Form Best Practices)
+### Integrated Calculation System
 ```
 src/
 ├── config/
-│   ├── form-config.ts       # Separated properties (FIELDS, RULES, etc.)
-│   ├── validatorjs-config.ts # Validation messages setup
-│   └── index.ts             # Centralized exports
-├── components/              # Reusable UI components
-├── Form.ts                  # Main form class
-└── App.tsx                  # Main application component
+│   ├── form-config.ts          # Form configuration + field dependencies
+│   ├── validatorjs-config.ts   # Validation messages setup
+│   └── index.ts                # Centralized exports
+├── components/
+│   ├── YarnCalculationResults.tsx  # Reactive results display
+│   ├── BodyMeasurementField.tsx    # Specialized measurement inputs
+│   └── [other components]          # Form field components
+├── calculations/
+│   └── yarn-calculations.ts       # Calculation types (legacy)
+├── contexts/
+│   └── FormContext.tsx            # Form context provider
+├── Form.ts                        # Main form class with integrated calculations
+└── App.tsx                        # Main application component
 ```
 
-### Configuration Pattern
-Uses **MobX React Form's separated properties** pattern:
+### Reactive Architecture Pattern
+**Form Class as Single Source of Truth:**
 ```typescript
-// Clean separated configuration
-export const FIELDS = ['yarnLength', 'itemType', ...];
-export const RULES = { yarnLength: 'required|numeric|min:50|max:800', ... };
-export const LABELS = { yarnLength: 'Yarn Length per 100g', ... };
-export const DISABLED = { size: ({ form }) => form.$('itemType')?.value === 'scarf' };
+class MyForm extends Form {
+  // Integrated calculation method
+  calculateYarnRequirements(): YarnCalculationResult { ... }
+  
+  // Computed property for readiness
+  get isCalculationReady(): boolean { ... }
+  
+  // Custom validation methods
+  validateBodyMeasurement(value, type) { ... }
+}
+```
+
+**Fully Reactive Components:**
+```typescript
+// Results automatically update when form changes
+export const YarnCalculationResults = observer(() => {
+  const form = useFormContext();
+  
+  if (form.isCalculationReady) {
+    const result = form.calculateYarnRequirements();
+    // ... render results
+  }
+});
+```
+
+### Field Dependencies System
+**Declarative Dependency Configuration:**
+```typescript
+export const FIELD_DEPENDENCIES = {
+  itemType: [
+    { targetField: 'sleevesLength', rules: { 'sweater': 'long', 'scarf': '' } },
+    { targetField: 'length', rules: { 'scarf': '120', 'sweater': '' } }
+  ]
+};
 ```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 20.19+ or 22.12+ (required for Vite 7)
 - npm or yarn
 
 ### Installation

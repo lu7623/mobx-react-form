@@ -11,7 +11,9 @@ export {
   PLACEHOLDERS,
   RULES,
   DEFAULTS,
-  DISABLED
+  DISABLED,
+  SIZE_MEASUREMENT_RANGES,
+  getSizeBasedErrorMessage
 } from './form-config';
 
 // Export validatorjs configuration

@@ -1,18 +1,20 @@
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import MyForm from './Form';
-import { NumberField, SubmitButton, FormStatus, RadioField, SelectField } from './components';
+import { FormProvider } from './contexts/FormContext';
+import { NumberField, BodyMeasurementField, SubmitButton, FormStatus, RadioField, SelectField, YarnCalculationResults } from './components';
 
 const App = observer(() => {
   // Create form instance
   const [form] = useState(() => new MyForm());
 
   return (
-    <div 
-      className="min-h-screen bg-gray-50 flex items-center justify-center p-4"
-      style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}
-    >
-      <div className="w-full max-w-lg mx-auto p-6 bg-white rounded-xl shadow-lg">
+    <FormProvider form={form}>
+      <div 
+        className="min-h-screen bg-gray-50 flex items-center justify-center p-4"
+        style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}
+      >
+        <div className="w-full max-w-lg mx-auto p-6 bg-white rounded-xl shadow-lg">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-primary-600 mb-2">
             Yarn Calculations
@@ -28,7 +30,6 @@ const App = observer(() => {
 
           {/* Item Type Selection */}
           <SelectField 
-            field={form.$('itemType')} 
             fieldName="itemType"
             options={[
               { value: 'scarf', label: 'Scarf' },
@@ -52,9 +53,7 @@ const App = observer(() => {
             
             {/* Size - Disabled when item type is 'scarf' */}
             <SelectField 
-              field={form.$('size')} 
               fieldName="size"
-              disabled={form.$('size').disabled}
               options={[
                 { value: 'S', label: 'Small (S)' },
                 { value: 'M', label: 'Medium (M)' },
@@ -90,24 +89,21 @@ const App = observer(() => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Waist Measurement */}
-              <NumberField 
-                field={form.$('bodyMeasurements.waist')} 
+              <BodyMeasurementField 
                 fieldName="bodyMeasurements.waist"
-                disabled={form.$('bodyMeasurements.waist').disabled}
+                measurementType="waist"
               />
               
               {/* Chest Measurement */}
-              <NumberField 
-                field={form.$('bodyMeasurements.chest')} 
+              <BodyMeasurementField 
                 fieldName="bodyMeasurements.chest"
-                disabled={form.$('bodyMeasurements.chest').disabled}
+                measurementType="chest"
               />
               
               {/* Hips Measurement */}
-              <NumberField 
-                field={form.$('bodyMeasurements.hips')} 
+              <BodyMeasurementField 
                 fieldName="bodyMeasurements.hips"
-                disabled={form.$('bodyMeasurements.hips').disabled}
+                measurementType="hips"
               />
             </div>
           </div>
@@ -126,9 +122,13 @@ const App = observer(() => {
 
           {/* Form Status */}
           <FormStatus isValid={form.isValid} isDirty={form.isDirty} />
-      </form>
+        </form>
+
+        {/* Yarn Calculation Results - Automatically shows when form is ready */}
+        <YarnCalculationResults />
+        </div>
       </div>
-    </div>
+    </FormProvider>
   );
 });
 
