@@ -1,19 +1,11 @@
 import { Form } from 'mobx-react-form';
 import dvr from 'mobx-react-form/lib/validators/DVR';
 import validatorjs from 'validatorjs';
+import { FORM_FIELDS, VALIDATION_MESSAGES } from './config';
 
-// Configure validatorjs with default English messages to fix template errors
+// Configure validatorjs with validation messages from config
 validatorjs.useLang('en');
-validatorjs.setMessages('en', {
-  required: 'The :attribute field is required.',
-  email: 'The :attribute format is invalid.',
-  string: 'The :attribute must be a string.',
-  between: {
-    numeric: 'The :attribute must be between :min and :max.',
-    string: 'The :attribute must be between :min and :max characters.',
-  },
-  same: 'The :attribute and :other must match.',
-});
+validatorjs.setMessages('en', VALIDATION_MESSAGES);
 
 export default class MyForm extends Form {
   
@@ -44,27 +36,11 @@ export default class MyForm extends Form {
 
   /*
     Return the `fields` as a collection into the `setup()` method
-    with a `rules` property for the validation.
+    Fields and validation rules are loaded from separate configuration files.
   */
   setup() {
     return {
-      fields: [{
-        name: 'email',
-        label: 'Email',
-        placeholder: 'Insert Email',
-        rules: 'required|email|string|between:5,25',
-        value: 's.jobs@apple.com'
-      }, {
-        name: 'password',
-        label: 'Password',
-        placeholder: 'Insert Password',
-        rules: 'required|string|between:5,25',
-      }, {
-        name: 'passwordConfirm',
-        label: 'Password Confirmation',
-        placeholder: 'Confirm Password',
-        rules: 'required|string|same:password',
-      }],
+      fields: FORM_FIELDS,
     };
   }
 
